@@ -1,65 +1,52 @@
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
+from pages.common import CommonPage
 
+class PaymentPage(CommonPage):
+    # Payment form elements
+    STREET_ADDRESS = (By.XPATH, '//*[@id="root"]/div/section/div/div[2]/div/form/input[1]')
+    CITY = (By.XPATH, '//*[@id="root"]/div/section/div/div[2]/div/form/input[2]')
+    POSTCODE = (By.XPATH, '//*[@id="root"]/div/section/div/div[2]/div/form/input[3]')
+    CARD_NUMBER = (By.XPATH, '//*[@id="root"]/div/section/div/div[2]/div/form/input[4]')
+    CARD_NAME = (By.XPATH, '//*[@id="root"]/div/section/div/div[2]/div/form/input[5]')
+    EXPIRATION = (By.XPATH, '//*[@id="root"]/div/section/div/div[2]/div/form/div/div[1]/input')
+    CVV = (By.XPATH, '//*[@id="root"]/div/section/div/div[2]/div/form/div/div[2]/input')
+    BUY_NOW_BUTTON = (By.XPATH, '//*[@id="root"]/div/section/div/div[2]/div/form/button')
 
-class PaymentPage:
     def __init__(self, driver):
-        self.driver = driver
+        super().__init__(driver)
 
-    # Locators
-    STREET_ADDRESS_INPUT = '//*[@id="root"]/div/section/div/div[2]/div/form/input[1]'
-    CITY_INPUT = '//*[@id="root"]/div/section/div/div[2]/div/form/input[2]'
-    POSTCODE_INPUT = '//*[@id="root"]/div/section/div/div[2]/div/form/input[3]'
-    CARD_NUMBER_INPUT = '//*[@id="root"]/div/section/div/div[2]/div/form/input[4]'
-    NAME_ON_CARD_INPUT = '//*[@id="root"]/div/section/div/div[2]/div/form/input[5]'
-    EXPIRATION_INPUT = '//*[@id="root"]/div/section/div/div[2]/div/form/div/div[1]/input'
-    CVV_INPUT = '//*[@id="root"]/div/section/div/div[2]/div/form/div/div[2]/input'
-    BUY_NOW_BUTTON = '//*[@id="root"]/div/section/div/div[2]/div/form/button'
+    def enter_street_address(self, address):
+        self.enter_text(*self.STREET_ADDRESS, address)
 
-    def fill_street_address(self, address):
-        street_address_input = WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, self.STREET_ADDRESS_INPUT))
-        )
-        street_address_input.send_keys(address)
+    def enter_city(self, city):
+        self.enter_text(*self.CITY, city)
 
-    def fill_city(self, city):
-        city_input = self.driver.find_element(By.XPATH, self.CITY_INPUT)
-        city_input.send_keys(city)
+    def enter_postcode(self, postcode):
+        self.enter_text(*self.POSTCODE, postcode)
 
-    def fill_postcode(self, postcode):
-        postcode_input = self.driver.find_element(By.XPATH, self.POSTCODE_INPUT)
-        postcode_input.send_keys(postcode)
+    def enter_card_number(self, card_number):
+        self.enter_text(*self.CARD_NUMBER, card_number)
 
-    def fill_card_number(self, card_number):
-        card_number_input = self.driver.find_element(By.XPATH, self.CARD_NUMBER_INPUT)
-        card_number_input.send_keys(card_number)
+    def enter_card_name(self, card_name):
+        self.enter_text(*self.CARD_NAME, card_name)
 
-    def fill_name_on_card(self, name):
-        name_on_card_input = self.driver.find_element(By.XPATH, self.NAME_ON_CARD_INPUT)
-        name_on_card_input.send_keys(name)
+    def enter_expiration(self, expiration):
+        self.enter_text(*self.EXPIRATION, expiration)
 
-    def fill_expiration(self, expiration_date):
-        expiration_input = self.driver.find_element(By.XPATH, self.EXPIRATION_INPUT)
-        expiration_input.send_keys(expiration_date)
+    def enter_cvv(self, cvv):
+        self.enter_text(*self.CVV, cvv)
 
-    def fill_cvv(self, cvv):
-        cvv_input = self.driver.find_element(By.XPATH, self.CVV_INPUT)
-        cvv_input.send_keys(cvv)
+    def click_buy_now(self):
+        self.click(*self.BUY_NOW_BUTTON)
+
+    def fill_payment_form(self, address, city, postcode, card_number, card_name, expiration, cvv):
+        self.enter_street_address(address)
+        self.enter_city(city)
+        self.enter_postcode(postcode)
+        self.enter_card_number(card_number)
+        self.enter_card_name(card_name)
+        self.enter_expiration(expiration)
+        self.enter_cvv(cvv)
 
     def submit_payment(self):
-        buy_now_button = self.driver.find_element(By.XPATH, self.BUY_NOW_BUTTON)
-        buy_now_button.click()
-
-    def complete_payment(self, address, city, postcode, card_number, name_on_card, expiration_date, cvv):
-        self.fill_street_address(address)
-        self.fill_city(city)
-        self.fill_postcode(postcode)
-        self.fill_card_number(card_number)
-        self.fill_name_on_card(name_on_card)
-        self.fill_expiration(expiration_date)
-        self.fill_cvv(cvv)
-        self.submit_payment()
-
-
+        self.click_buy_now()
