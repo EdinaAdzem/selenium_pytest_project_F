@@ -25,7 +25,7 @@ class TestShop(unittest.TestCase):
         self.driver.quit()
 
     def test_shop_cart(self):
-        print("Logging in with existing user...")
+        print("Logging in with existing user...colamity jane ")
         self.login_page.login("colamityjane@test.com", "jane1234")
 
         # Navigate to the shop link
@@ -51,18 +51,14 @@ class TestShop(unittest.TestCase):
         )
         add_to_cart_button.click()
 
-        #check the cart
-        print("Viewing the shopping cart...")
-        cart_icon = WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, '//*[@id="root"]/div/div[1]/div[2]/div[2]/div[3]/svg/path'))
+        print("Navigating to the checkout page - masterschool.com/checkout")
+        self.driver.get("https://grocerymate.masterschool.com/checkout")
+        print("Verifying the product in the cart...")
+        product_name = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, '//*[contains(text(), "Celery")]'))
         )
-        cart_icon.click()
-        WebDriverWait(self.driver, 10).until(
-            EC.url_contains("/checkout")
-        )
-        assert "checkout" in self.driver.current_url, "Failed to navigate to checkout page."
-        print("Verified that the checkout page is loaded.")
-
+        assert product_name.is_displayed(), "Product not found in the cart!"
+        print("Product successfully found in the cart!")
 
 if __name__ == "__main__":
     unittest.main()
