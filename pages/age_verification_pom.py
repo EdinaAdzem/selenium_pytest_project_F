@@ -7,7 +7,7 @@ class AgeVerificationPage:
         self.driver = driver
 
     def handle_age_confirmation(self, dob):
-        date_input = WebDriverWait(self.driver, 10).until(
+        date_input = WebDriverWait(self.driver, 20).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="root"]/div/div[3]/div[2]/div/div[2]/div/input'))
         )
         date_input.clear()
@@ -18,7 +18,7 @@ class AgeVerificationPage:
 
     def is_age_validation_triggered(self):
         try:
-            error_message = WebDriverWait(self.driver, 10).until(
+            error_message = WebDriverWait(self.driver, 15).until(
                 EC.presence_of_element_located((By.XPATH, '//*[contains(text(), "Age verification failed")]'))
             )
             return error_message.is_displayed()

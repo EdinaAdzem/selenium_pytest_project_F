@@ -33,7 +33,7 @@ class TestRegistration(unittest.TestCase):
     def test_registration(self):
         email = self.generate_random_email()
         password = self.generate_random_password()
-        fullname = "Test User"
+        fullname = "New User"
         self.registration_page.click_login()
         self.registration_page.click_create_new_account()
         self.registration_page.create_new_account(
