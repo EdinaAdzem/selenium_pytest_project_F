@@ -3,11 +3,7 @@ from selenium import webdriver
 from pages.shipping_cost_pom import ShippingCostPage
 from pages.age_verification_pom import AgeVerificationPage
 
-
-# URL for the website
 url = "https://grocerymate.masterschool.com"
-dob = "18.01.1981"  # Ensure this format matches what the site expects
-
 class TestShippingCost(unittest.TestCase):
 
     @classmethod
@@ -24,7 +20,7 @@ class TestShippingCost(unittest.TestCase):
         print("Test completed, quitting the driver.")
         cls.driver.quit()
 
-    def test_shipping_costs(self):
+    def test_shipping_costs_for_total_less_than_20(self):
         shipping_cost_page = ShippingCostPage(self.driver)
 
         # Login first
@@ -41,17 +37,12 @@ class TestShippingCost(unittest.TestCase):
         print("Handling age verification...")
         shipping_cost_page.handle_age_confirmation(dob)
         print("Age verification completed.")
-
-        # Test data for shopping and shipping costs
         test_data = [
-            ("18.01.1981", 15, 22.50, 0),  # (total > 20) free shipping
-            #("18.01.1981", 5, 15.00, 5), #
+            ("18.01.1981", 5, 15.00, 5),  # (total < 20) shipping cost 5
         ]
 
         for dob, quantity, expected_total_cost, expected_shipping_cost in test_data:
             print(f"Adding {quantity} items to the cart...")
-
-            # Adding items to the cart
             shipping_cost_page.search_and_add_items(
                 ShippingCostPage.PRODUCT_XPATH,
                 ShippingCostPage.QUANTITY_INPUT_XPATH,
@@ -61,22 +52,15 @@ class TestShippingCost(unittest.TestCase):
             print(f"{quantity} items added to the cart.")
             print("Navigating to the cart to check items and total cost...")
             shipping_cost_page.navigate_to_cart()
-
-            # Fetch the latest shipping and total cost values this will always be incremented with the set user
             print("Fetching updated shipping and total cost...")
             shipping_cost, total_cost = shipping_cost_page.get_shipping_and_total_cost()
             print(f"Shipping cost: {shipping_cost}, Total cost: {total_cost}")
-            print(f"Verifying that shipping cost is {expected_shipping_cost} when total cost is greater than 20...")
-
-            # Verifying that shipping cost is 0 if total cost is >= 20
-            if total_cost >= 20:
-                self.assertEqual(shipping_cost, 0,
-                                 f"Expected shipping cost to be 0 for total >= 20, but got {shipping_cost}")
-            else:
-                # If total < 20, shipping free
-                self.assertEqual(shipping_cost, expected_shipping_cost,
-                                 f"Expected shipping {expected_shipping_cost}, shipping_ {shipping_cost}")
+            # total is less than 20
+            self.assertEqual(shipping_cost, expected_shipping_cost,
+                             f"Expected shipping cost {expected_shipping_cost}, but got {shipping_cost}")
 
             print("Assertions passed.")
+
+
 if __name__ == "__main__":
     unittest.main()

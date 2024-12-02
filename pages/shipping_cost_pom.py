@@ -16,6 +16,7 @@ class ShippingCostPage:
     TOTAL_COST = (By.XPATH, '//*[@id="root"]/div/section/div/div[1]/div/div[4]')
     #//*[@id="root"]/div/section/div/div[1]/div/div[4] - total
     #//*[@id="root"]/div/section/div/div[1]/div/div[2] - shipping
+    #//*[@id="root"]/div/section/div/div[1]/div/div[1]/div/div/div[1]/a - remove items
 
 
     # Add product-related XPaths for parameterization in tests
