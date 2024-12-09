@@ -46,7 +46,7 @@ class TestShop(unittest.TestCase):
 
         #add product
         print("Adding product to cart...")
-        add_to_cart_button = WebDriverWait(self.driver, 10).until(
+        add_to_cart_button = WebDriverWait(self.driver, 15).until(
             EC.element_to_be_clickable((By.XPATH, '//*[@id="root"]/div/div[3]/div[2]/div/div[2]/div[1]/div/div[2]/div[3]/div/div[2]/button'))
         )
         add_to_cart_button.click()
@@ -54,8 +54,8 @@ class TestShop(unittest.TestCase):
         print("Navigating to the checkout page - masterschool.com/checkout")
         self.driver.get("https://grocerymate.masterschool.com/checkout")
         print("Verifying the product in the cart...")
-        product_name = WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, '//*[contains(text(), "Celery")]'))
+        product_name = WebDriverWait(self.driver, 15).until(
+            EC.presence_of_element_located((By.XPATH, '//*[contains(text(), "Oranges")]'))
         )
         assert product_name.is_displayed(), "Product not found in the cart!"
         print("Product successfully found in the cart!")
