@@ -1,0 +1,20 @@
+# Selenium PyTest Project
+
+This project automates the test cases written as part of the SDLC  **Test Plan & Test Case Design**.
+The system under consideration is [GroceryMate](https://grocerymate.masterschool.com), an online grocery store.
+The focus of this project is to implement robust test automation (utilizing pytest and unit test) for various features of the application:
+  - including user registration,
+  - login,
+  - product search,
+  - shopping flow.
+
+## Features
+
+- **Page Object Model (POM):** All pages are modularized into the `pages` package for better reusability and maintainability.
+- **Organized Tests:** All test cases are placed under the `tests` directory for easy navigation and management.
+- **Parameterized Tests:** Some test cases use `@pytest.mark.parametrize` to run the same test with multiple datasets, ensuring a thorough validation of various scenarios.
+- **Unit Testing:** Certain test cases are implemented using `unittest` for feature-specific validations, enhancing test coverage.
+- **Fixtures:** WebDriver is initialized using PyTest fixtures, ensuring efficient and reusable test setups.
+- **Constants:** URLs, credentials, and other reusable data are stored in `utils/constants.py` to avoid hardcoding, making the tests more maintainable and flexible.
+- **Assertions:** Tests use clear and meaningful assertions to validate application functionality.
+- **HTML Reports:** Generates detailed test reports in HTML format, providing insights into test execution and results.
