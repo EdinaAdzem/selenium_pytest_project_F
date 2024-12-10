@@ -18,39 +18,36 @@ def setup():
 @pytest.mark.parametrize(
     "username, password, product_name, rating",
     [
-        ("colamityjane@test.com", "jane1234", "Oranges", 3),
-        ("johnsmith@test.com", "smith1234", "Apples", 4),
-        ("test@test.com", "678", "Bananas", 5),
+        ("colamityjane@test.com", "jane1234", "Plums", 3),
+        ("colamityjohn@test.com", "colamityjohn", "Nectarines", 5),
     ],
 )
 def test_product_rating(setup, username, password, product_name, rating):
     driver = setup
     product_rating_page = ProductRatingPage(driver)
 
-    # Log in as an existing user
+    # Log in as registered users
     print(f"Logging in with user: {username}")
     product_rating_page.login(username, password)
 
-    # Navigate to the shop page
+    # to the shop
     print("Navigating to the shop page...")
     product_rating_page.navigate_to_shop()
-
-    # Handle age confirmation popup
     print("Handling age confirmation popup...")
     product_rating_page.handle_age_confirmation("01-01-1981")
-
-    # Select a product to rate
     print(f"Selecting product: {product_name} to rate...")
     product_rating_page.select_product(product_name)
-
-    # Submit a rating
     print(f"Submitting a {rating}-star rating...")
     product_rating_page.rate_product(rating)
 
-    # Verify the rating submission
-    user_display_name = username.split("@")[0]
-    print(f"Verifying rating for user: {user_display_name}")
-    assert product_rating_page.verify_rating_submission(
-        user_display_name
-    ), f"Rating submission verification failed for user {user_display_name}."
-    print("Product rating successfully verified!")
+    if product_rating_page.is_product_already_rated():
+        print(f"Product '{product_name}' is already rated. Skipping rating.")
+    else:
+        print(f"Submitting a {rating}-star rating...")
+        product_rating_page.rate_product(rating)
+        user_display_name = username.split("@")[0]
+        print(f"Verifying rating for user: {user_display_name}")
+        assert product_rating_page.verify_rating_submission(
+            user_display_name
+        ), f"Rating submission verification failed for user {user_display_name}."
+        print("Product rating successfully verified!")

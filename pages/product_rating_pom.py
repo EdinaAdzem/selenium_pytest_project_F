@@ -44,6 +44,17 @@ class ProductRatingPage(CommonPage):
         except Exception as e:
             print(f"Failed to rate the product with {rating} stars: {e}")
 
+    def is_product_already_rated(self):
+        """:raise the product radted???
+        """
+        try:
+            review_message = self.driver.find_element_by_xpath(
+                "//*[contains(text(), 'You have already reviewed this product.')]")
+            if review_message.is_displayed():
+                return True
+        except:
+            return False
+
     def verify_rating_submission(self, username):
         try:
             # Wait for the comments section to load
