@@ -29,6 +29,7 @@ class TestShop(unittest.TestCase):
         self.login_page.login("colamityjane@test.com", "jane1234")
 
         # Navigate to the shop link
+        #change the relative paths to absolute in at least 4 tests (login, product_search, registration, age_verification)
         print("Navigating to the shop page...")
         shop_button = WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, '//*[@id="root"]/div/div[2]/div/div/ul/li[2]/a'))
@@ -37,11 +38,14 @@ class TestShop(unittest.TestCase):
 
         # age confirm
         print("Handling age confirmation popup...")
+        print("Allowing for age verification only when it pops up on the page...Checking...")
         date_input = WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="root"]/div/div[3]/div[2]/div/div[2]/div/input'))
         )
         date_input.send_keys("01-01-1981")  # Hardcoded date of birth
+        print("bypassing the age confirmation by hardcoding the values")
         confirm_button = self.driver.find_element(By.XPATH, '//*[@id="root"]/div/div[3]/div[2]/div/div[2]/div/button')
+        assert confirm_button.is_displayed(), "checking that the confirm button is available before the click is applied..."
         confirm_button.click()
 
         #add product
@@ -57,6 +61,7 @@ class TestShop(unittest.TestCase):
         product_name = WebDriverWait(self.driver, 15).until(
             EC.presence_of_element_located((By.XPATH, '//*[contains(text(), "Oranges")]'))
         )
+        assert product_name.is_enabled(),"Product name is enabled!"
         assert product_name.is_displayed(), "Product not found in the cart!"
         print("Product successfully found in the cart!")
 
