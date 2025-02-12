@@ -37,6 +37,6 @@ def test_login(setup, email, password):
     assert driver.current_url == "https://grocerymate.masterschool.com/auth"
 
     logout_button = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.XPATH, "//*[@id='root']/div/div/div[1]/div[1]/div/button"))
+        EC.presence_of_element_located((By.XPATH, "//button[contains(text(), 'Logout')]"))
     )
     assert logout_button.is_displayed()

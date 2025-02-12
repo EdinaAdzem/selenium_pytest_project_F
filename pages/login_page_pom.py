@@ -5,11 +5,12 @@ from pages.common import CommonPage
 
 
 class LoginPage(CommonPage):
-    LOGIN = (By.XPATH, '//*[@id="root"]/div/div[1]/div[2]/div[2]/div[1]')
-    EMAIL = (By.XPATH, "//*[@id='root']/div/div/div[1]/div[1]/div/form/input[1]")
-    PASSWORD = (By.XPATH, "//*[@id='root']/div/div/div[1]/div[1]/div/form/input[2]")
-    SIGNIN = (By.XPATH, "//*[@id='root']/div/div/div[1]/div[1]/div/form/button")
-    ERROR_MESSAGE = (By.XPATH, "//*[@id='root']/div/div/div[1]/div[1]/div/form/div[2]")
+    #updated the paths to relative instead of absolute for robustness
+    LOGIN = (By.XPATH, "//div[@class='headerIcon']")
+    EMAIL = (By.XPATH, "//form//input[@type='email']")
+    PASSWORD = (By.XPATH, "//form//input[@type='password']")
+    SIGNIN = (By.XPATH, "//button[@type='submit' and contains(@class, 'submit-btn')]")
+    ERROR_MESSAGE = (By.XPATH, "//form//div[contains(@class, 'error')]")
 
     def __init__(self, driver):
         super().__init__(driver)
@@ -36,7 +37,6 @@ class LoginPage(CommonPage):
         WebDriverWait(self.driver, 10).until(
             EC.url_to_be("https://grocerymate.masterschool.com/auth")
         )
-
 
         self.enter_email(email)
         self.enter_password(password)
